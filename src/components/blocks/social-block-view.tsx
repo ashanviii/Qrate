@@ -6,9 +6,19 @@ import { SocialIcon, SOCIAL_LABELS } from "@/components/blocks/social-icons";
 import { extractSocialHandle, getSocialAvatarUrl } from "@/lib/social";
 
 export function SocialBlockView({ data }: { data: SocialBlockData }) {
-  const [avatarFailed, setAvatarFailed] = useState(false);
   const avatarUrl = getSocialAvatarUrl(data.platform, data.url);
   const handle = extractSocialHandle(data.platform, data.url);
+
+  // A failed load should only stick for the URL that failed — once the
+  // user edits it (fixing a typo, switching platforms), give the new
+  // avatar URL a fresh chance instead of staying stuck on the fallback.
+  const [avatarFailed, setAvatarFailed] = useState(false);
+  const [checkedUrl, setCheckedUrl] = useState(avatarUrl);
+  if (avatarUrl !== checkedUrl) {
+    setCheckedUrl(avatarUrl);
+    setAvatarFailed(false);
+  }
+
   const showAvatar = avatarUrl && !avatarFailed;
 
   return (
