@@ -57,7 +57,7 @@ export function ProfileBlockView({ data }: { data: ProfileBlockData }) {
         <div className="truncate text-lg font-semibold" style={{ fontFamily: "var(--bento-font-heading)" }}>
           {data.name || "Your name"}
         </div>
-        <div className="mt-0.5 line-clamp-2 text-sm opacity-70">{data.tagline}</div>
+        <div className="mt-0.5 text-sm opacity-70">{data.tagline}</div>
         {data.location && (
           <div className="mt-1.5 flex items-center gap-1 text-xs opacity-60">
             <MapPin className="h-3 w-3" /> {data.location}
