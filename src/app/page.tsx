@@ -33,7 +33,7 @@ export default function LandingPage() {
             style={{ background: "linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6, #fbbf24)" }}
           />
           <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:py-24 lg:grid-cols-2 lg:items-center lg:py-28">
-            <div>
+            <div className="animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-700 ease-out">
               <span className="inline-flex items-center gap-1.5 rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
                 <Sparkles className="h-3 w-3" /> Your whole internet presence, one page
               </span>
@@ -66,8 +66,11 @@ export default function LandingPage() {
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((f) => (
-              <div key={f.title} className="rounded-2xl border bg-card p-5 transition-shadow hover:shadow-md">
-                <f.icon className="h-5 w-5 text-muted-foreground" />
+              <div
+                key={f.title}
+                className="group rounded-2xl border bg-card p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg"
+              >
+                <f.icon className="h-5 w-5 text-muted-foreground transition-transform duration-300 group-hover:scale-110" />
                 <h3 className="mt-3 text-sm font-semibold">{f.title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{f.body}</p>
               </div>
@@ -83,9 +86,9 @@ export default function LandingPage() {
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {(Object.entries(PRESETS) as [PresetId, (typeof PRESETS)[PresetId]][]).map(([id, preset]) => (
-                <div key={id} className="overflow-hidden rounded-2xl border bg-card">
+                <div key={id} className="group overflow-hidden rounded-2xl border bg-card transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg">
                   <div
-                    className="flex h-28 items-end p-4"
+                    className="flex h-28 items-end overflow-hidden p-4"
                     style={{
                       background: preset.theme.background.type === "gradient"
                         ? `linear-gradient(135deg, ${preset.theme.background.gradientFrom}, ${preset.theme.background.gradientTo})`
@@ -93,7 +96,7 @@ export default function LandingPage() {
                     }}
                   >
                     <span
-                      className="rounded-full px-2.5 py-1 text-xs font-medium"
+                      className="rounded-full px-2.5 py-1 text-xs font-medium transition-transform duration-300 ease-out group-hover:scale-110"
                       style={{ background: preset.theme.accent, color: "#fff" }}
                     >
                       Aa

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   DndContext,
   closestCenter,
@@ -38,15 +39,17 @@ export function GridCanvas({ blocks, theme }: { blocks: Block[]; theme: Theme })
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={blocks.map((b) => b.id)} strategy={rectSortingStrategy}>
         <div className="bento-grid" style={{ gap: theme.spacing, ["--cols" as string]: theme.columns }}>
-          {blocks.map((block) => (
-            <SortableBlock
-              key={block.id}
-              block={block}
-              theme={theme}
-              selected={selectedBlockId === block.id}
-              onSelect={() => selectBlock(block.id)}
-            />
-          ))}
+          <AnimatePresence initial={false}>
+            {blocks.map((block) => (
+              <SortableBlock
+                key={block.id}
+                block={block}
+                theme={theme}
+                selected={selectedBlockId === block.id}
+                onSelect={() => selectBlock(block.id)}
+              />
+            ))}
+          </AnimatePresence>
         </div>
       </SortableContext>
     </DndContext>
@@ -104,18 +107,22 @@ function SortableBlock({
   }
 
   return (
-    <div
-      ref={(node) => {
+    <motion.div
+      ref={(node: HTMLDivElement | null) => {
         setNodeRef(node);
         elRef.current = node;
       }}
+      layout={!isDragging && !liveSpan}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isDragging ? 0.4 : block.hidden ? 0.35 : 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.15 } }}
+      transition={{ duration: 0.18 }}
       className="bento-grid-item group/block relative"
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
         ["--w" as string]: span.w,
         ["--h" as string]: span.h,
-        opacity: isDragging ? 0.4 : block.hidden ? 0.35 : 1,
         zIndex: isDragging || liveSpan ? 50 : undefined,
       }}
     >
@@ -137,7 +144,7 @@ function SortableBlock({
       <ResizeHandle axis="w" onPointerDown={startResize("w")} />
       <ResizeHandle axis="h" onPointerDown={startResize("h")} />
       <ResizeHandle axis="both" onPointerDown={startResize("both")} />
-    </div>
+    </motion.div>
   );
 }
 

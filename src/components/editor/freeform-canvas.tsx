@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Block, Theme } from "@/lib/types";
 import { useEditorStore } from "@/lib/store/editor-store";
 import { BlockShell } from "@/components/canvas/block-shell";
@@ -10,6 +11,7 @@ import { freeformBounds, FREEFORM_BASE_WIDTH } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
 const MIN_SIZE = 60;
+const SETTLE_TRANSITION = "left 0.2s cubic-bezier(0.22,1,0.36,1), top 0.2s cubic-bezier(0.22,1,0.36,1), width 0.2s cubic-bezier(0.22,1,0.36,1), height 0.2s cubic-bezier(0.22,1,0.36,1)";
 
 export function FreeformCanvas({ blocks, theme }: { blocks: Block[]; theme: Theme }) {
   const bounds = freeformBounds(blocks);
@@ -20,18 +22,20 @@ export function FreeformCanvas({ blocks, theme }: { blocks: Block[]; theme: Them
     <div className="w-full overflow-x-auto rounded-2xl border border-dashed p-4" style={{ borderColor: "color-mix(in oklab, var(--bento-primary, #000) 15%, transparent)" }}>
       <div
         className="relative"
-        style={{ width: Math.max(FREEFORM_BASE_WIDTH, bounds.width), height: bounds.height }}
+        style={{ width: Math.max(FREEFORM_BASE_WIDTH, bounds.width), height: bounds.height, transition: "height 0.2s ease-out" }}
         onClick={() => selectBlock(null)}
       >
-        {blocks.map((block) => (
-          <FreeformBlock
-            key={block.id}
-            block={block}
-            theme={theme}
-            selected={selectedBlockId === block.id}
-            onSelect={() => selectBlock(block.id)}
-          />
-        ))}
+        <AnimatePresence>
+          {blocks.map((block) => (
+            <FreeformBlock
+              key={block.id}
+              block={block}
+              theme={theme}
+              selected={selectedBlockId === block.id}
+              onSelect={() => selectBlock(block.id)}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -109,16 +113,19 @@ function FreeformBlock({
   }
 
   return (
-    <div
+    <motion.div
       className="group/block absolute"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: block.hidden ? 0.35 : 1, scale: 1, rotate: block.freeform.rotate }}
+      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.15 } }}
+      transition={{ duration: 0.18 }}
       style={{
         left: current.x,
         top: current.y,
         width: current.w,
         height: current.h,
-        transform: `rotate(${block.freeform.rotate}deg)`,
-        opacity: block.hidden ? 0.35 : 1,
         zIndex: selected ? 30 : 1,
+        transition: live ? undefined : SETTLE_TRANSITION,
       }}
     >
       <BlockShell
@@ -137,7 +144,7 @@ function FreeformBlock({
       <ResizeHandle axis="w" onPointerDown={startResize("w")} />
       <ResizeHandle axis="h" onPointerDown={startResize("h")} />
       <ResizeHandle axis="both" onPointerDown={startResize("both")} />
-    </div>
+    </motion.div>
   );
 }
 
