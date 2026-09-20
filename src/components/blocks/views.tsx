@@ -254,8 +254,10 @@ export function PetBlockView({ data }: { data: PetBlockData }) {
 
 export function StampBlockView({ data }: { data: StampBlockData }) {
   return (
-    <div className="flex h-full w-full items-center justify-center p-2">
-      <StampFrame data={data} />
+    <div className="flex h-full w-full items-center justify-center" style={{ containerType: "size" }}>
+      <div style={{ width: "min(100%, 100cqh)", aspectRatio: "1 / 1" }}>
+        <StampFrame data={data} />
+      </div>
     </div>
   );
 }

@@ -176,6 +176,7 @@
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 4), 1fr);
+  grid-auto-rows: minmax(110px, auto);
   --cap: 999;
 }
 @media (max-width: 900px) {
