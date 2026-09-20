@@ -60,12 +60,3 @@ export function createBlock(type: BlockType, overrides?: Partial<GridSpan>): Blo
   };
   return { ...base, type, data: defaultDataFor(type) } as Block;
 }
-
-export const SIZE_PRESETS: { label: string; w: number; h: number }[] = [
-  { label: "S", w: 1, h: 1 },
-  { label: "Wide", w: 2, h: 1 },
-  { label: "Tall", w: 1, h: 2 },
-  { label: "Large", w: 2, h: 2 },
-  { label: "Banner", w: 3, h: 1 },
-  { label: "XL", w: 3, h: 2 },
-];

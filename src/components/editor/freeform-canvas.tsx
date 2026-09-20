@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import type { Block, Theme } from "@/lib/types";
 import { useEditorStore } from "@/lib/store/editor-store";
 import { BlockShell } from "@/components/canvas/block-shell";
@@ -8,6 +8,8 @@ import { BlockContent } from "@/components/blocks/block-content";
 import { BlockToolbar } from "@/components/editor/block-toolbar";
 import { freeformBounds, FREEFORM_BASE_WIDTH } from "@/lib/layout";
 import { cn } from "@/lib/utils";
+
+const MIN_SIZE = 60;
 
 export function FreeformCanvas({ blocks, theme }: { blocks: Block[]; theme: Theme }) {
   const bounds = freeformBounds(blocks);
@@ -47,7 +49,6 @@ function FreeformBlock({
   onSelect: () => void;
 }) {
   const updateBlockFreeform = useEditorStore((s) => s.updateBlockFreeform);
-  const elRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
 
   const current = live ?? block.freeform;
@@ -77,34 +78,38 @@ function FreeformBlock({
     window.addEventListener("pointerup", onUp);
   }
 
-  function startResize(e: React.PointerEvent) {
-    e.stopPropagation();
-    e.preventDefault();
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const origin = { w: block.freeform.w, h: block.freeform.h };
-    setLive({ ...block.freeform });
+  function startResize(axis: "w" | "h" | "both") {
+    return (e: React.PointerEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const origin = { w: block.freeform.w, h: block.freeform.h };
+      setLive({ ...block.freeform });
 
-    function onMove(ev: PointerEvent) {
-      const dw = ev.clientX - startX;
-      const dh = ev.clientY - startY;
-      setLive({ ...block.freeform, w: Math.max(80, origin.w + dw), h: Math.max(80, origin.h + dh) });
-    }
-    function onUp(ev: PointerEvent) {
-      const dw = ev.clientX - startX;
-      const dh = ev.clientY - startY;
-      updateBlockFreeform(block.id, { w: Math.max(80, origin.w + dw), h: Math.max(80, origin.h + dh) });
-      setLive(null);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-    }
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
+      function next(dw: number, dh: number) {
+        return {
+          ...block.freeform,
+          w: axis !== "h" ? Math.max(MIN_SIZE, origin.w + dw) : block.freeform.w,
+          h: axis !== "w" ? Math.max(MIN_SIZE, origin.h + dh) : block.freeform.h,
+        };
+      }
+      function onMove(ev: PointerEvent) {
+        setLive(next(ev.clientX - startX, ev.clientY - startY));
+      }
+      function onUp(ev: PointerEvent) {
+        updateBlockFreeform(block.id, next(ev.clientX - startX, ev.clientY - startY));
+        setLive(null);
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+      }
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+    };
   }
 
   return (
     <div
-      ref={elRef}
       className="group/block absolute"
       style={{
         left: current.x,
@@ -129,11 +134,28 @@ function FreeformBlock({
         <BlockContent block={block} interactive={false} />
       </BlockShell>
       <BlockToolbar blockId={block.id} hidden={block.hidden} />
-      <div
-        onPointerDown={startResize}
-        className="absolute -bottom-1.5 -right-1.5 z-20 h-4 w-4 cursor-nwse-resize touch-none rounded-full border-2 border-background opacity-0 transition-opacity group-hover/block:opacity-100"
-        style={{ background: "var(--bento-accent, #6366f1)" }}
-      />
+      <ResizeHandle axis="w" onPointerDown={startResize("w")} />
+      <ResizeHandle axis="h" onPointerDown={startResize("h")} />
+      <ResizeHandle axis="both" onPointerDown={startResize("both")} />
     </div>
+  );
+}
+
+function ResizeHandle({ axis, onPointerDown }: { axis: "w" | "h" | "both"; onPointerDown: (e: React.PointerEvent) => void }) {
+  const positionClass =
+    axis === "w"
+      ? "-right-1.5 top-1/2 -translate-y-1/2 cursor-ew-resize"
+      : axis === "h"
+      ? "-bottom-1.5 left-1/2 -translate-x-1/2 cursor-ns-resize"
+      : "-bottom-1.5 -right-1.5 cursor-nwse-resize";
+  return (
+    <div
+      onPointerDown={onPointerDown}
+      className={cn(
+        "absolute z-20 h-4 w-4 touch-none rounded-full border-2 border-background opacity-0 transition-opacity group-hover/block:opacity-100",
+        positionClass
+      )}
+      style={{ background: "var(--bento-accent, #6366f1)" }}
+    />
   );
 }
