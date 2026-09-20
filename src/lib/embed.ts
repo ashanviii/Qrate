@@ -1,15 +1,19 @@
+const SPOTIFY_TYPES = ["track", "playlist", "album", "episode", "show", "artist"];
+
 export function toSpotifyEmbedUrl(url: string): string | null {
   if (!url) return null;
   try {
     const u = new URL(url);
     if (!u.hostname.includes("spotify.com")) return null;
     const parts = u.pathname.split("/").filter(Boolean);
-    // /track/ID, /playlist/ID, /album/ID, /episode/ID, /show/ID
-    if (parts.length >= 2) {
-      const [type, id] = parts;
-      return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
-    }
-    return null;
+    // Share links can look like /track/ID or, with a locale prefix,
+    // /intl-en/track/ID — find the known type segment instead of assuming
+    // it's always first.
+    const typeIndex = parts.findIndex((p) => SPOTIFY_TYPES.includes(p));
+    const type = typeIndex === -1 ? undefined : parts[typeIndex];
+    const id = typeIndex === -1 ? undefined : parts[typeIndex + 1];
+    if (!type || !id) return null;
+    return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
   } catch {
     return null;
   }
