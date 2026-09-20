@@ -1,6 +1,5 @@
 import {
   ArrowUpRight,
-  MapPin,
   FileText,
   Download,
   Play,
@@ -60,7 +59,7 @@ export function ProfileBlockView({ data }: { data: ProfileBlockData }) {
         <div className="mt-0.5 text-sm opacity-70">{data.tagline}</div>
         {data.location && (
           <div className="mt-1.5 flex items-center gap-1 text-xs">
-            <MapPin className="h-3 w-3 shrink-0" fill="#ef4444" style={{ color: "#ef4444" }} />
+            <span className="shrink-0" aria-hidden>📍</span>
             <span className="opacity-60">{data.location}</span>
           </div>
         )}
