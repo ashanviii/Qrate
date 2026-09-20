@@ -112,16 +112,16 @@ export function ProjectBlockView({ data }: { data: ProjectBlockData }) {
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden">
       {data.imageUrl ? (
-        <div className="relative h-1/2 w-full shrink-0 overflow-hidden">
+        <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden">
           <img src={data.imageUrl} alt="" className="h-full w-full object-cover" />
         </div>
       ) : (
         <div
-          className="h-1/2 w-full shrink-0"
+          className="aspect-[16/10] w-full shrink-0"
           style={{ background: "color-mix(in oklab, var(--bento-accent, #6366f1) 30%, transparent)" }}
         />
       )}
-      <div className="flex min-h-0 flex-1 flex-col justify-between p-4">
+      <div className="flex min-h-0 flex-1 flex-col p-4">
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
             <div className="truncate font-semibold" style={{ fontFamily: "var(--bento-font-heading)" }}>

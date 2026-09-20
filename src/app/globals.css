@@ -179,8 +179,9 @@
   /* A minimum row height keeps same-shape blocks visually consistent by
      default, but rows can still grow taller when a block's content (e.g. a
      long tagline) genuinely needs more room than that — content is never
-     clipped to force a fixed size. */
-  grid-auto-rows: minmax(130px, auto);
+     clipped to force a fixed size. Kept low so compact content (a single
+     row of skill tags, a small icon) doesn't sit in a mostly-empty box. */
+  grid-auto-rows: minmax(110px, auto);
   --cap: 999;
 }
 @media (max-width: 900px) {
