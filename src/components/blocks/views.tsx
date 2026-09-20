@@ -4,7 +4,6 @@ import {
   FileText,
   Download,
   Play,
-  Stamp as StampIcon,
 } from "lucide-react";
 import type {
   ProfileBlockData,
@@ -24,6 +23,7 @@ import type {
 } from "@/lib/types";
 import { SocialIcon, SOCIAL_LABELS } from "@/components/blocks/social-icons";
 import { PetSprite } from "@/components/blocks/pet-sprite";
+import { StampFrame } from "@/components/blocks/stamp-frame";
 import { toSpotifyEmbedUrl, toYoutubeEmbedUrl } from "@/lib/embed";
 import { cn } from "@/lib/utils";
 
@@ -254,32 +254,8 @@ export function PetBlockView({ data }: { data: PetBlockData }) {
 
 export function StampBlockView({ data }: { data: StampBlockData }) {
   return (
-    <div className="flex h-full w-full items-center justify-center p-2.5" style={{ background: "#f4efe1" }}>
-      <div
-        className="relative flex h-full w-full flex-col overflow-hidden rounded-[2px] border-[3px] border-dashed"
-        style={{ borderColor: "rgba(35,25,10,0.35)" }}
-      >
-        {data.imageUrl ? (
-          <img src={data.imageUrl} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center" style={{ background: "rgba(35,25,10,0.06)" }}>
-            <StampIcon className="h-6 w-6" style={{ color: "rgba(35,25,10,0.3)" }} />
-          </div>
-        )}
-        {data.caption && (
-          <div
-            className="absolute inset-x-0 bottom-0 py-1 text-center"
-            style={{ background: "rgba(244,239,225,0.92)" }}
-          >
-            <span
-              className="font-mono text-[9px] font-semibold tracking-[0.2em] uppercase"
-              style={{ color: "rgba(35,25,10,0.65)" }}
-            >
-              {data.caption}
-            </span>
-          </div>
-        )}
-      </div>
+    <div className="flex h-full w-full items-center justify-center p-2">
+      <StampFrame data={data} />
     </div>
   );
 }
