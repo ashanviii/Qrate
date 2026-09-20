@@ -7,14 +7,17 @@ import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEditorStore } from "@/lib/store/editor-store";
 import type { Block } from "@/lib/types";
+import { SIZE_PRESETS } from "@/lib/blocks";
 import {
   ProfileForm, TextForm, ImageForm, LinkForm, SocialForm, ProjectForm,
   VideoForm, GifForm, ResumeForm, SkillsForm, SpotifyForm, YoutubeForm, PetForm, StampForm,
 } from "@/components/editor/inspector/block-forms";
+import { cn } from "@/lib/utils";
 
 export function BlockInspector({ block }: { block: Block }) {
   const selectBlock = useEditorStore((s) => s.selectBlock);
   const mode = useEditorStore((s) => s.portfolio?.mode);
+  const updateBlockGrid = useEditorStore((s) => s.updateBlockGrid);
   const updateBlockFreeform = useEditorStore((s) => s.updateBlockFreeform);
   const updateBlockBg = useEditorStore((s) => s.updateBlockBg);
 
@@ -29,9 +32,29 @@ export function BlockInspector({ block }: { block: Block }) {
 
       <div className="grid gap-5 p-4">
         {mode === "grid" && (
-          <p className="text-xs text-muted-foreground">
-            Drag the handles on the right, bottom, or bottom-right corner of the block to resize it.
-          </p>
+          <div className="grid gap-1.5">
+            <Label className="text-xs text-muted-foreground">Size</Label>
+            <div className="grid grid-cols-3 gap-1.5">
+              {SIZE_PRESETS.map((preset) => {
+                const active = block.grid.w === preset.w && block.grid.h === preset.h;
+                return (
+                  <button
+                    key={preset.label}
+                    onClick={() => updateBlockGrid(block.id, { w: preset.w, h: preset.h })}
+                    className={cn(
+                      "rounded-lg border px-2 py-1.5 text-xs transition-colors",
+                      active ? "border-foreground bg-muted font-medium" : "border-transparent bg-muted/40 hover:bg-muted"
+                    )}
+                  >
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-muted-foreground">
+              Or drag the handles on the block&apos;s right, bottom, or corner edge for a custom size.
+            </p>
+          </div>
         )}
 
         {mode === "freeform" && (
