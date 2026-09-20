@@ -253,13 +253,7 @@ export function PetBlockView({ data }: { data: PetBlockData }) {
 }
 
 export function StampBlockView({ data }: { data: StampBlockData }) {
-  return (
-    <div className="flex h-full w-full items-center justify-center" style={{ containerType: "size" }}>
-      <div style={{ width: "min(100%, 100cqh)", aspectRatio: "1 / 1" }}>
-        <StampFrame data={data} />
-      </div>
-    </div>
-  );
+  return <StampFrame data={data} />;
 }
 
 function EmptyMedia({ label, icon: Icon = FileText }: { label: string; icon?: typeof FileText }) {
