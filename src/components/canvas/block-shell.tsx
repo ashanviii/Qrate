@@ -13,6 +13,15 @@ export const BlockShell = forwardRef<
     children: React.ReactNode;
   } & React.HTMLAttributes<HTMLDivElement>
 >(function BlockShell({ block, theme, className, style, children, ...rest }, ref) {
+  // Stickers (Stamp) float directly on the page — no card chrome.
+  if (block.type === "stamp") {
+    return (
+      <div ref={ref} className={cn("group/block", className)} style={style} {...rest}>
+        {children}
+      </div>
+    );
+  }
+
   const bg = block.bg ?? "var(--bento-card-bg)";
   return (
     <div

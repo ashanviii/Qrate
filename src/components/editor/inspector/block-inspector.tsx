@@ -67,19 +67,21 @@ export function BlockInspector({ block }: { block: Block }) {
           </div>
         )}
 
-        <div className="grid gap-1.5">
-          <Label className="text-xs text-muted-foreground">Background</Label>
-          <div className="flex flex-wrap gap-1.5">
-            {["transparent", "#ffffff", "#111111", "#f4f4f5", "#fee2e2", "#dbeafe", "#dcfce7", "#fef9c3"].map((c) => (
-              <button
-                key={c}
-                onClick={() => updateBlockBg(block.id, c === "transparent" ? undefined : c)}
-                className="h-6 w-6 rounded-full border shadow-sm"
-                style={{ background: c === "transparent" ? "repeating-conic-gradient(#ccc 0 25%, transparent 0 50%) 0 0/10px 10px" : c }}
-              />
-            ))}
+        {block.type !== "stamp" && (
+          <div className="grid gap-1.5">
+            <Label className="text-xs text-muted-foreground">Background</Label>
+            <div className="flex flex-wrap gap-1.5">
+              {["transparent", "#ffffff", "#111111", "#f4f4f5", "#fee2e2", "#dbeafe", "#dcfce7", "#fef9c3"].map((c) => (
+                <button
+                  key={c}
+                  onClick={() => updateBlockBg(block.id, c === "transparent" ? undefined : c)}
+                  className="h-6 w-6 rounded-full border shadow-sm"
+                  style={{ background: c === "transparent" ? "repeating-conic-gradient(#ccc 0 25%, transparent 0 50%) 0 0/10px 10px" : c }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <BlockForm block={block} />
       </div>
