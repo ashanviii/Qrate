@@ -122,7 +122,6 @@ function SortableBlock({
         setNodeRef(node);
         elRef.current = node;
       }}
-      layout={!isDragging && !dragPx}
       initial={{ opacity: 0 }}
       animate={{ opacity: isDragging ? 0.4 : block.hidden ? 0.35 : 1 }}
       exit={{ opacity: 0, transition: { duration: 0.15 } }}
