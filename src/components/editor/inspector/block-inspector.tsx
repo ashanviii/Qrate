@@ -15,12 +15,9 @@ import {
 } from "@/components/editor/inspector/block-forms";
 import { cn } from "@/lib/utils";
 
-const MAX_ROWS = 8;
-
 export function BlockInspector({ block }: { block: Block }) {
   const selectBlock = useEditorStore((s) => s.selectBlock);
   const mode = useEditorStore((s) => s.portfolio?.mode);
-  const columns = useEditorStore((s) => s.portfolio?.theme.columns) ?? 4;
   const updateBlockGrid = useEditorStore((s) => s.updateBlockGrid);
   const updateBlockFreeform = useEditorStore((s) => s.updateBlockFreeform);
   const updateBlockBg = useEditorStore((s) => s.updateBlockBg);
@@ -67,38 +64,8 @@ export function BlockInspector({ block }: { block: Block }) {
                 </div>
               </div>
             ))}
-            <div className="grid grid-cols-2 gap-2 pt-0.5">
-              <div className="grid gap-1">
-                <Label className="text-[11px] text-muted-foreground">Columns</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  max={columns}
-                  value={block.grid.w}
-                  onChange={(e) => {
-                    const w = clamp(Number(e.target.value) || 1, 1, columns);
-                    updateBlockGrid(block.id, { w });
-                  }}
-                  className="h-8"
-                />
-              </div>
-              <div className="grid gap-1">
-                <Label className="text-[11px] text-muted-foreground">Rows</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  max={MAX_ROWS}
-                  value={block.grid.h}
-                  onChange={(e) => {
-                    const h = clamp(Number(e.target.value) || 1, 1, MAX_ROWS);
-                    updateBlockGrid(block.id, { h });
-                  }}
-                  className="h-8"
-                />
-              </div>
-            </div>
             <p className="text-[11px] text-muted-foreground">
-              Pick a shape to start, then fine-tune with the numbers above or by dragging the block&apos;s edges.
+              Pick a shape to start, then drag the handles on the block&apos;s edges to fine-tune it.
             </p>
           </div>
         )}
@@ -180,10 +147,6 @@ function BlockForm({ block }: { block: Block }) {
     case "stamp": return <StampForm block={block} />;
     default: return null;
   }
-}
-
-function clamp(v: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, v));
 }
 
 function ShapeIcon({ shape, className }: { shape: "square" | "landscape" | "portrait"; className?: string }) {

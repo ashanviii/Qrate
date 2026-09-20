@@ -193,13 +193,13 @@ export function ResumeBlockView({ data }: { data: ResumeBlockData }) {
 
 export function SkillsBlockView({ data }: { data: SkillsBlockData }) {
   return (
-    <div className="flex h-full w-full flex-col justify-center gap-2 p-4">
+    <div className="flex h-full w-full flex-col gap-2.5 p-4">
       {data.title && <div className="text-xs font-semibold uppercase tracking-wide opacity-50">{data.title}</div>}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap content-start gap-2">
         {data.items.map((skill) => (
           <span
             key={skill}
-            className="rounded-full px-2.5 py-1 text-xs font-medium"
+            className="rounded-full px-3 py-1.5 text-sm font-medium"
             style={{ background: "color-mix(in oklab, var(--bento-accent, #6366f1) 15%, transparent)" }}
           >
             {skill}
