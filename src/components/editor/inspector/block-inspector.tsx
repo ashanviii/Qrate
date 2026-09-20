@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Square, RectangleHorizontal, RectangleVertical } from "lucide-react";
+import { X, Square, RectangleHorizontal, RectangleVertical, StretchHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 export function BlockInspector({ block }: { block: Block }) {
   const selectBlock = useEditorStore((s) => s.selectBlock);
   const mode = useEditorStore((s) => s.portfolio?.mode);
+  const columns = useEditorStore((s) => s.portfolio?.theme.columns) ?? 4;
   const updateBlockGrid = useEditorStore((s) => s.updateBlockGrid);
   const updateBlockFreeform = useEditorStore((s) => s.updateBlockFreeform);
   const updateBlockBg = useEditorStore((s) => s.updateBlockBg);
@@ -52,6 +53,18 @@ export function BlockInspector({ block }: { block: Block }) {
                   </button>
                 );
               })}
+              <button
+                onClick={() => updateBlockGrid(block.id, { w: columns, h: 1 })}
+                className={cn(
+                  "col-span-2 flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs transition-colors",
+                  block.grid.w === columns && block.grid.h === 1
+                    ? "border-foreground bg-muted font-medium"
+                    : "border-transparent bg-muted/40 hover:bg-muted"
+                )}
+              >
+                <StretchHorizontal className="h-3.5 w-3.5 shrink-0" />
+                Full width
+              </button>
             </div>
           </div>
         )}
