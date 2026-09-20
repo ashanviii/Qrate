@@ -61,14 +61,16 @@ export function createBlock(type: BlockType, overrides?: Partial<GridSpan>): Blo
   return { ...base, type, data: defaultDataFor(type) } as Block;
 }
 
-// Grouped by shape/ratio rather than arbitrary S/M/L labels — pick the shape
-// that fits, then fine-tune the exact size by dragging or typing a number.
-export const SIZE_PRESET_GROUPS: {
-  shape: "square" | "landscape" | "portrait";
+// bento.me-style sizing: a small, fixed set of sizes you click to snap to
+// instantly — no free-form dragging in grid mode.
+export const SIZE_PRESETS: {
   label: string;
-  sizes: { w: number; h: number }[];
+  shape: "square" | "landscape" | "portrait";
+  w: number;
+  h: number;
 }[] = [
-  { shape: "square", label: "Square", sizes: [{ w: 1, h: 1 }, { w: 2, h: 2 }] },
-  { shape: "landscape", label: "Landscape", sizes: [{ w: 2, h: 1 }, { w: 3, h: 1 }] },
-  { shape: "portrait", label: "Portrait", sizes: [{ w: 1, h: 2 }, { w: 1, h: 3 }] },
+  { label: "Small", shape: "square", w: 1, h: 1 },
+  { label: "Wide", shape: "landscape", w: 2, h: 1 },
+  { label: "Tall", shape: "portrait", w: 1, h: 2 },
+  { label: "Big", shape: "square", w: 2, h: 2 },
 ];

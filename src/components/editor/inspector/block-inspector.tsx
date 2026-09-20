@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEditorStore } from "@/lib/store/editor-store";
 import type { Block } from "@/lib/types";
-import { SIZE_PRESET_GROUPS } from "@/lib/blocks";
+import { SIZE_PRESETS } from "@/lib/blocks";
 import {
   ProfileForm, TextForm, ImageForm, LinkForm, SocialForm, ProjectForm,
   VideoForm, GifForm, ResumeForm, SkillsForm, SpotifyForm, YoutubeForm, PetForm, StampForm,
@@ -33,40 +33,26 @@ export function BlockInspector({ block }: { block: Block }) {
 
       <div className="grid gap-5 p-4">
         {mode === "grid" && (
-          <div className="grid gap-3">
-            <Label className="text-xs text-muted-foreground">Shape</Label>
-            {SIZE_PRESET_GROUPS.map((group) => (
-              <div key={group.shape} className="grid gap-1.5">
-                <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
-                  <ShapeIcon shape={group.shape} className="h-3.5 w-3.5" />
-                  {group.label}
-                </div>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {group.sizes.map((size) => {
-                    const active = block.grid.w === size.w && block.grid.h === size.h;
-                    return (
-                      <button
-                        key={`${size.w}x${size.h}`}
-                        onClick={() => updateBlockGrid(block.id, { w: size.w, h: size.h })}
-                        className={cn(
-                          "flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs transition-colors",
-                          active ? "border-foreground bg-muted font-medium" : "border-transparent bg-muted/40 hover:bg-muted"
-                        )}
-                      >
-                        <ShapeIcon
-                          shape={group.shape}
-                          className={cn("h-3.5 w-3.5 shrink-0", group.shape === "square" && size.w === 2 && "h-4 w-4")}
-                        />
-                        {size.w} × {size.h}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-            <p className="text-[11px] text-muted-foreground">
-              Pick a shape to start, then drag the handles on the block&apos;s edges to fine-tune it.
-            </p>
+          <div className="grid gap-1.5">
+            <Label className="text-xs text-muted-foreground">Size</Label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {SIZE_PRESETS.map((preset) => {
+                const active = block.grid.w === preset.w && block.grid.h === preset.h;
+                return (
+                  <button
+                    key={preset.label}
+                    onClick={() => updateBlockGrid(block.id, { w: preset.w, h: preset.h })}
+                    className={cn(
+                      "flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs transition-colors",
+                      active ? "border-foreground bg-muted font-medium" : "border-transparent bg-muted/40 hover:bg-muted"
+                    )}
+                  >
+                    <ShapeIcon shape={preset.shape} className={cn("h-3.5 w-3.5 shrink-0", preset.label === "Big" && "h-4 w-4")} />
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
