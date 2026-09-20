@@ -61,11 +61,14 @@ export function createBlock(type: BlockType, overrides?: Partial<GridSpan>): Blo
   return { ...base, type, data: defaultDataFor(type) } as Block;
 }
 
-export const SIZE_PRESETS: { label: string; w: number; h: number }[] = [
-  { label: "S", w: 1, h: 1 },
-  { label: "Wide", w: 2, h: 1 },
-  { label: "Tall", w: 1, h: 2 },
-  { label: "Large", w: 2, h: 2 },
-  { label: "Banner", w: 3, h: 1 },
-  { label: "XL", w: 3, h: 2 },
+// Grouped by shape/ratio rather than arbitrary S/M/L labels — pick the shape
+// that fits, then fine-tune the exact size by dragging or typing a number.
+export const SIZE_PRESET_GROUPS: {
+  shape: "square" | "landscape" | "portrait";
+  label: string;
+  sizes: { w: number; h: number }[];
+}[] = [
+  { shape: "square", label: "Square", sizes: [{ w: 1, h: 1 }, { w: 2, h: 2 }] },
+  { shape: "landscape", label: "Landscape", sizes: [{ w: 2, h: 1 }, { w: 3, h: 1 }] },
+  { shape: "portrait", label: "Portrait", sizes: [{ w: 1, h: 2 }, { w: 1, h: 3 }] },
 ];
