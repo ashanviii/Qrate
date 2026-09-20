@@ -11,7 +11,7 @@ import type { Block } from "@/lib/types";
 import { SIZE_PRESETS } from "@/lib/blocks";
 import {
   ProfileForm, TextForm, ImageForm, LinkForm, SocialForm, ProjectForm,
-  VideoForm, GifForm, ResumeForm, SkillsForm, SpotifyForm, YoutubeForm, PetForm, StampForm,
+  VideoForm, GifForm, ResumeForm, SkillsForm, SpotifyForm, YoutubeForm, PetForm, StampForm, CountdownForm, CalendlyForm,
 } from "@/components/editor/inspector/block-forms";
 import { cn } from "@/lib/utils";
 
@@ -113,8 +113,11 @@ export function BlockInspector({ block }: { block: Block }) {
               {["transparent", "#ffffff", "#111111", "#f4f4f5", "#fee2e2", "#dbeafe", "#dcfce7", "#fef9c3"].map((c) => (
                 <button
                   key={c}
-                  onClick={() => updateBlockBg(block.id, c === "transparent" ? undefined : c)}
-                  className="h-6 w-6 rounded-full border shadow-sm"
+                  onClick={() => updateBlockBg(block.id, c)}
+                  className={cn(
+                    "h-6 w-6 rounded-full border shadow-sm",
+                    (block.bg ?? "transparent") === c && "ring-2 ring-offset-1 ring-[var(--bento-accent,#6366f1)]"
+                  )}
                   style={{ background: c === "transparent" ? "repeating-conic-gradient(#ccc 0 25%, transparent 0 50%) 0 0/10px 10px" : c }}
                 />
               ))}
@@ -144,6 +147,8 @@ function BlockForm({ block }: { block: Block }) {
     case "youtube": return <YoutubeForm block={block} />;
     case "pet": return <PetForm block={block} />;
     case "stamp": return <StampForm block={block} />;
+    case "countdown": return <CountdownForm block={block} />;
+    case "calendly": return <CalendlyForm block={block} />;
     default: return null;
   }
 }

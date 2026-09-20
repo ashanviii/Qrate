@@ -89,13 +89,25 @@ function SortableBlock({
         data-selected={selected}
         className={cn(
           "h-full w-full cursor-pointer",
-          block.type !== "stamp" &&
-            "ring-2 ring-transparent ring-offset-2 ring-offset-background transition-shadow",
-          selected && (block.type === "stamp" ? "drop-shadow-[0_0_0_2px_var(--bento-accent,#6366f1)]" : "ring-[var(--bento-accent,#6366f1)]")
+          block.type === "stamp" && selected && "drop-shadow-[0_0_0_2px_var(--bento-accent,#6366f1)]"
         )}
       >
         <BlockContent block={block} interactive={false} />
       </BlockShell>
+      {/* A separate overlay, not the card's own box-shadow: BlockShell already
+          sets an inline box-shadow for the theme's card shadow, which would
+          silently win the cascade over (and hide) a ring-* class on that same
+          element. */}
+      {block.type !== "stamp" && (
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0 ring-2 ring-offset-2 ring-offset-background ring-[var(--bento-accent,#6366f1)] transition-opacity duration-200",
+            selected ? "opacity-100" : "opacity-0"
+          )}
+          style={{ borderRadius: `var(--bento-radius, ${theme.radius}px)` }}
+        />
+      )}
       <BlockToolbar blockId={block.id} hidden={block.hidden} dragHandleProps={{ ...attributes, ...listeners }} />
     </motion.div>
   );

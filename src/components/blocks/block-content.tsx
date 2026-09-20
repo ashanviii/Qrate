@@ -13,8 +13,10 @@ import {
   YoutubeBlockView,
   PetBlockView,
   StampBlockView,
+  CalendlyBlockView,
 } from "@/components/blocks/views";
 import { SocialBlockView } from "@/components/blocks/social-block-view";
+import { CountdownBlockView } from "@/components/blocks/countdown-block-view";
 
 // Renders a block's inner content. `interactive` controls whether link-like
 // blocks become real anchors (public page) or stay inert (editor canvas,
@@ -49,6 +51,10 @@ export function BlockContent({ block, interactive }: { block: Block; interactive
       return <PetBlockView data={block.data} />;
     case "stamp":
       return <StampBlockView data={block.data} />;
+    case "countdown":
+      return <CountdownBlockView data={block.data} />;
+    case "calendly":
+      return <CalendlyBlockView data={block.data} />;
     default:
       return null;
   }

@@ -2,7 +2,7 @@
 
 import {
   User, Type, Image as ImageIcon, Link2, Share2, Briefcase,
-  Film, Sparkles as GifIcon, FileText, ListChecks, Music, PawPrint, Stamp,
+  Film, Sparkles as GifIcon, FileText, ListChecks, Music, PawPrint, Stamp, Timer, CalendarClock,
 } from "lucide-react";
 import type { BlockType } from "@/lib/types";
 import { BLOCK_LIBRARY } from "@/lib/blocks";
@@ -25,6 +25,8 @@ const ICONS: Record<BlockType, React.ComponentType<{ className?: string }>> = {
   youtube: SOCIAL_ICONS.youtube,
   pet: PawPrint,
   stamp: Stamp,
+  countdown: Timer,
+  calendly: CalendarClock,
 };
 
 export function BlockPalette() {

@@ -3,6 +3,7 @@ import {
   FileText,
   Download,
   Play,
+  CalendarClock,
 } from "lucide-react";
 import type {
   ProfileBlockData,
@@ -18,10 +19,11 @@ import type {
   YoutubeBlockData,
   PetBlockData,
   StampBlockData,
+  CalendlyBlockData,
 } from "@/lib/types";
 import { PetSprite } from "@/components/blocks/pet-sprite";
 import { StampFrame } from "@/components/blocks/stamp-frame";
-import { toSpotifyEmbedUrl, toYoutubeEmbedUrl } from "@/lib/embed";
+import { toSpotifyEmbedUrl, toYoutubeEmbedUrl, toCalendlyEmbedUrl } from "@/lib/embed";
 import { cn } from "@/lib/utils";
 
 const TEXT_SIZE: Record<TextBlockData["size"], string> = {
@@ -226,6 +228,20 @@ export function YoutubeBlockView({ data }: { data: YoutubeBlockData }) {
       allowFullScreen
       loading="lazy"
       title="YouTube embed"
+    />
+  );
+}
+
+export function CalendlyBlockView({ data }: { data: CalendlyBlockData }) {
+  const embed = toCalendlyEmbedUrl(data.url);
+  if (!embed) return <EmptyMedia label="Calendly link" icon={CalendarClock} />;
+  return (
+    <iframe
+      src={embed}
+      className="h-full w-full"
+      style={{ border: 0 }}
+      loading="lazy"
+      title="Calendly scheduling"
     />
   );
 }

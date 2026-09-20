@@ -26,6 +26,8 @@ export const BLOCK_LIBRARY: {
   { type: "youtube", label: "YouTube", description: "Embed a video", defaultGrid: { x: 0, y: 0, w: 2, h: 2 } },
   { type: "pet", label: "Pet", description: "A little animated companion", defaultGrid: { x: 0, y: 0, w: 1, h: 1 } },
   { type: "stamp", label: "Stamp", description: "A cute postage-stamp sticker", defaultGrid: { x: 0, y: 0, w: 1, h: 1 } },
+  { type: "countdown", label: "Countdown", description: "Count down to a date", defaultGrid: { x: 0, y: 0, w: 2, h: 1 } },
+  { type: "calendly", label: "Calendly", description: "Let people book time with you", defaultGrid: { x: 0, y: 0, w: 2, h: 2 } },
 ];
 
 export function defaultDataFor<T extends BlockType>(type: T): BlockDataMap[T] {
@@ -44,6 +46,8 @@ export function defaultDataFor<T extends BlockType>(type: T): BlockDataMap[T] {
     youtube: { url: "" },
     pet: { species: "cat", name: "Milo" },
     stamp: { imageUrl: "", caption: "BENTO" },
+    countdown: { targetDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), label: "Countdown" },
+    calendly: { url: "" },
   };
   return map[type];
 }

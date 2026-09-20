@@ -11,6 +11,7 @@ export const SHADOW_CSS: Record<ShadowLevel, string> = {
 
 export function themeBackgroundStyle(theme: Theme): CSSProperties {
   const bg = theme.background;
+  const line = (opacity: number) => `color-mix(in oklab, ${theme.primary} ${opacity}%, transparent)`;
   switch (bg.type) {
     case "gradient":
       return { background: `linear-gradient(${bg.gradientAngle}deg, ${bg.gradientFrom}, ${bg.gradientTo})` };
@@ -18,6 +19,28 @@ export function themeBackgroundStyle(theme: Theme): CSSProperties {
       return bg.imageUrl
         ? { backgroundImage: `url(${bg.imageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }
         : { background: bg.solid };
+    case "dotted":
+      return {
+        backgroundColor: bg.solid,
+        backgroundImage: `radial-gradient(${line(18)} 1.5px, transparent 1.5px)`,
+        backgroundSize: "22px 22px",
+      };
+    case "grid":
+      return {
+        backgroundColor: bg.solid,
+        backgroundImage: `linear-gradient(${line(10)} 1px, transparent 1px), linear-gradient(90deg, ${line(10)} 1px, transparent 1px)`,
+        backgroundSize: "32px 32px",
+      };
+    case "lines":
+      return {
+        backgroundColor: bg.solid,
+        backgroundImage: `repeating-linear-gradient(135deg, ${line(8)} 0px, ${line(8)} 1px, transparent 1px, transparent 14px)`,
+      };
+    case "vignette":
+      return {
+        backgroundColor: bg.solid,
+        backgroundImage: `radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, ${theme.accent} 16%, transparent), transparent 70%)`,
+      };
     case "noise":
     case "solid":
     default:

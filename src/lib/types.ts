@@ -21,7 +21,7 @@ export type PresetId =
   | "glass"
   | "pixel";
 
-export type BackgroundType = "solid" | "gradient" | "image" | "noise";
+export type BackgroundType = "solid" | "gradient" | "image" | "noise" | "dotted" | "grid" | "lines" | "vignette";
 
 export interface BackgroundConfig {
   type: BackgroundType;
@@ -74,7 +74,9 @@ export type BlockType =
   | "spotify"
   | "youtube"
   | "pet"
-  | "stamp";
+  | "stamp"
+  | "countdown"
+  | "calendly";
 
 export interface BlockBase {
   id: string;
@@ -153,6 +155,9 @@ export interface SpotifyBlockData {
 export interface YoutubeBlockData {
   url: string;
 }
+export interface CalendlyBlockData {
+  url: string;
+}
 export type PetSpecies = "cat" | "dog" | "robot" | "blob" | "bird" | "bunny";
 export interface PetBlockData {
   species: PetSpecies;
@@ -161,6 +166,10 @@ export interface PetBlockData {
 export interface StampBlockData {
   imageUrl: string;
   caption: string;
+}
+export interface CountdownBlockData {
+  targetDate: string; // ISO datetime string
+  label: string;
 }
 
 export type BlockDataMap = {
@@ -178,6 +187,8 @@ export type BlockDataMap = {
   youtube: YoutubeBlockData;
   pet: PetBlockData;
   stamp: StampBlockData;
+  countdown: CountdownBlockData;
+  calendly: CalendlyBlockData;
 };
 
 export type Block = {

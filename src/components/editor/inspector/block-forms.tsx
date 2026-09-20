@@ -21,6 +21,8 @@ import type {
   YoutubeBlockData,
   PetBlockData,
   StampBlockData,
+  CountdownBlockData,
+  CalendlyBlockData,
   SocialPlatform,
   PetSpecies,
 } from "@/lib/types";
@@ -249,6 +251,18 @@ export function YoutubeForm({ block }: { block: Block & { data: YoutubeBlockData
   );
 }
 
+export function CalendlyForm({ block }: { block: Block & { data: CalendlyBlockData } }) {
+  const update = useUpdate(block.id);
+  return (
+    <div className="grid gap-4">
+      <Field label="Calendly link">
+        <Input value={block.data.url} onChange={(e) => update({ url: e.target.value })} placeholder="https://calendly.com/you/event" />
+      </Field>
+      <p className="text-xs text-muted-foreground">Paste your Calendly event or scheduling page link — visitors can book straight from your page.</p>
+    </div>
+  );
+}
+
 const PET_SPECIES: PetSpecies[] = ["cat", "dog", "robot", "blob", "bird", "bunny"];
 
 export function PetForm({ block }: { block: Block & { data: PetBlockData } }) {
@@ -287,6 +301,37 @@ export function StampForm({ block }: { block: Block & { data: StampBlockData } }
         <Input value={block.data.caption} onChange={(e) => update({ caption: e.target.value })} placeholder="e.g. BENTO, or a date" maxLength={16} />
       </Field>
       <p className="text-xs text-muted-foreground">A little decorative sticker — drop in a photo and it gets the dashed postage-stamp treatment automatically.</p>
+    </div>
+  );
+}
+
+// <input type="datetime-local"> works in local time with no timezone/seconds,
+// so it needs a lossy round-trip through the stored ISO string.
+function toDatetimeLocalValue(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+export function CountdownForm({ block }: { block: Block & { data: CountdownBlockData } }) {
+  const update = useUpdate(block.id);
+  return (
+    <div className="grid gap-4">
+      <Field label="Target date & time">
+        <Input
+          type="datetime-local"
+          value={toDatetimeLocalValue(block.data.targetDate)}
+          onChange={(e) => {
+            if (!e.target.value) return;
+            update({ targetDate: new Date(e.target.value).toISOString() });
+          }}
+        />
+      </Field>
+      <Field label="Label">
+        <Input value={block.data.label} onChange={(e) => update({ label: e.target.value })} placeholder="e.g. Launching in" maxLength={40} />
+      </Field>
+      <p className="text-xs text-muted-foreground">Counts down live to the date you pick, in each visitor&apos;s own timezone.</p>
     </div>
   );
 }

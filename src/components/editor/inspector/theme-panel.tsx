@@ -15,7 +15,8 @@ import { FileField } from "@/components/editor/inspector/file-field";
 import { uploadImage } from "@/lib/upload";
 
 const SHADOW_OPTIONS: ShadowLevel[] = ["none", "soft", "medium", "hard"];
-const BG_TYPES: BackgroundType[] = ["solid", "gradient", "image", "noise"];
+const BG_TYPES: BackgroundType[] = ["solid", "gradient", "image", "noise", "dotted", "grid", "lines", "vignette"];
+const SOLID_COLOR_BG_TYPES: BackgroundType[] = ["solid", "noise", "dotted", "grid", "lines", "vignette"];
 const FONT_KEYS = Object.keys(FONT_LABELS) as FontKey[];
 
 export function ThemePanel() {
@@ -82,9 +83,9 @@ export function ThemePanel() {
             </div>
           </div>
 
-          {bg.type === "solid" || bg.type === "noise" ? (
+          {SOLID_COLOR_BG_TYPES.includes(bg.type) && (
             <ColorField label="Background color" value={bg.solid} onChange={(v) => setTheme({ background: { ...bg, solid: v } })} />
-          ) : null}
+          )}
 
           {bg.type === "gradient" && (
             <div className="grid grid-cols-2 gap-3">

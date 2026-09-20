@@ -38,6 +38,19 @@ export function toYoutubeEmbedUrl(url: string): string | null {
   }
 }
 
+export function toCalendlyEmbedUrl(url: string): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (!u.hostname.includes("calendly.com")) return null;
+    u.searchParams.set("embed_type", "Inline");
+    u.searchParams.set("hide_gdpr_banner", "1");
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
 export function getYoutubeThumbnail(url: string): string | null {
   const embed = toYoutubeEmbedUrl(url);
   if (!embed) return null;
