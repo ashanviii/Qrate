@@ -121,8 +121,9 @@ function FreeformBlock({
         theme={theme}
         onPointerDown={startDrag}
         className={cn(
-          "h-full w-full cursor-grab touch-none select-none ring-2 ring-transparent ring-offset-2 ring-offset-background active:cursor-grabbing",
-          selected && "ring-[var(--bento-accent,#6366f1)]"
+          "h-full w-full cursor-grab touch-none select-none active:cursor-grabbing",
+          block.type !== "stamp" && "ring-2 ring-transparent ring-offset-2 ring-offset-background",
+          selected && (block.type === "stamp" ? "drop-shadow-[0_0_0_2px_var(--bento-accent,#6366f1)]" : "ring-[var(--bento-accent,#6366f1)]")
         )}
       >
         <BlockContent block={block} interactive={false} />

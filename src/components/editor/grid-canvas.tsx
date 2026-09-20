@@ -82,8 +82,10 @@ function SortableBlock({
         onClick={onSelect}
         data-selected={selected}
         className={cn(
-          "h-full w-full cursor-pointer ring-2 ring-transparent ring-offset-2 ring-offset-background transition-shadow",
-          selected && "ring-[var(--bento-accent,#6366f1)]"
+          "h-full w-full cursor-pointer",
+          block.type !== "stamp" &&
+            "ring-2 ring-transparent ring-offset-2 ring-offset-background transition-shadow",
+          selected && (block.type === "stamp" ? "drop-shadow-[0_0_0_2px_var(--bento-accent,#6366f1)]" : "ring-[var(--bento-accent,#6366f1)]")
         )}
       >
         <BlockContent block={block} interactive={false} />
