@@ -4,7 +4,6 @@ import {
   TextBlockView,
   ImageBlockView,
   LinkBlockView,
-  SocialBlockView,
   ProjectBlockView,
   VideoBlockView,
   GifBlockView,
@@ -15,6 +14,7 @@ import {
   PetBlockView,
   StampBlockView,
 } from "@/components/blocks/views";
+import { SocialBlockView } from "@/components/blocks/social-block-view";
 
 // Renders a block's inner content. `interactive` controls whether link-like
 // blocks become real anchors (public page) or stay inert (editor canvas,

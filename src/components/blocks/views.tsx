@@ -9,7 +9,6 @@ import type {
   TextBlockData,
   ImageBlockData,
   LinkBlockData,
-  SocialBlockData,
   ProjectBlockData,
   VideoBlockData,
   GifBlockData,
@@ -20,7 +19,6 @@ import type {
   PetBlockData,
   StampBlockData,
 } from "@/lib/types";
-import { SocialIcon, SOCIAL_LABELS } from "@/components/blocks/social-icons";
 import { PetSprite } from "@/components/blocks/pet-sprite";
 import { StampFrame } from "@/components/blocks/stamp-frame";
 import { toSpotifyEmbedUrl, toYoutubeEmbedUrl } from "@/lib/embed";
@@ -106,15 +104,6 @@ export function LinkBlockView({ data }: { data: LinkBlockData }) {
         <div className="truncate font-medium">{data.label || "My link"}</div>
         {data.description && <div className="truncate text-xs opacity-60">{data.description}</div>}
       </div>
-    </div>
-  );
-}
-
-export function SocialBlockView({ data }: { data: SocialBlockData }) {
-  return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
-      <SocialIcon platform={data.platform} className="h-7 w-7" />
-      <span className="text-xs font-medium opacity-70">{SOCIAL_LABELS[data.platform]}</span>
     </div>
   );
 }
