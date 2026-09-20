@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
-  Sparkles, Undo2, Redo2, Sun, Moon, ExternalLink, Eye, EyeOff, LogOut, Loader2, Check,
+  Sparkles, Undo2, Redo2, ExternalLink, Eye, EyeOff, LogOut, Loader2, Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -16,6 +16,8 @@ import {
 import { useEditorStore } from "@/lib/store/editor-store";
 import { useEditorUser } from "@/components/editor/user-context";
 import { signOut } from "@/lib/auth";
+import { ThemeSwitch } from "@/components/shadcn-space/switch/theme-switch";
+import { SuccessBadge } from "@/components/shadcn-space/badge/success-badge";
 
 export function EditorTopbar() {
   const router = useRouter();
@@ -65,12 +67,10 @@ export function EditorTopbar() {
         <IconButton label={previewMode ? "Exit preview" : "Preview"} onClick={togglePreview}>
           {previewMode ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </IconButton>
-        <IconButton label={theme === "dark" ? "Light mode" : "Dark mode"} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </IconButton>
+        <ThemeSwitch isDark={theme === "dark"} onToggle={(dark) => setTheme(dark ? "dark" : "light")} />
 
         <div className="mx-1 hidden items-center gap-2 rounded-full border px-3 py-1.5 sm:flex">
-          <span className="text-xs font-medium">{portfolio.published ? "Published" : "Draft"}</span>
+          {portfolio.published ? <SuccessBadge label="Published" /> : <span className="text-xs font-medium">Draft</span>}
           <Switch
             checked={portfolio.published}
             onCheckedChange={(v) => {

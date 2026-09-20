@@ -6,6 +6,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { HeroShowcase } from "@/components/marketing/hero-showcase";
+import { RippleCtaButton } from "@/components/shadcn-space/button/ripple-cta-button";
 import { PRESETS } from "@/lib/presets";
 import type { PresetId } from "@/lib/types";
 
@@ -43,9 +44,9 @@ export default function LandingPage() {
                 Build a playful, fully custom Bento-grid portfolio in minutes. Drag blocks, pick a vibe, publish — no code required.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Button asChild size="lg" className="gap-1.5">
-                  <Link href="/signup">Start building free <ArrowRight className="h-4 w-4" /></Link>
-                </Button>
+                <RippleCtaButton href="/signup" size="lg">
+                  Start building free <ArrowRight className="h-4 w-4" />
+                </RippleCtaButton>
                 <Button asChild size="lg" variant="outline">
                   <Link href="/demo">See a live example</Link>
                 </Button>
@@ -111,9 +112,9 @@ export default function LandingPage() {
         <section className="mx-auto max-w-3xl px-5 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Your page is waiting.</h2>
           <p className="mx-auto mt-3 max-w-md text-muted-foreground">Takes about a minute to set up. Free forever, upgrade never required.</p>
-          <Button asChild size="lg" className="mt-8 gap-1.5">
-            <Link href="/signup">Claim your username <ArrowRight className="h-4 w-4" /></Link>
-          </Button>
+          <RippleCtaButton href="/signup" size="lg" className="mt-8">
+            Claim your username <ArrowRight className="h-4 w-4" />
+          </RippleCtaButton>
         </section>
       </main>
       <footer className="border-t py-10">
